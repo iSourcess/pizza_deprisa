@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chef Panel - Pizza Deprizza</title>
+    <link rel="stylesheet" href="static/css/chef_styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <h1>🍕 Panel de Cocina</h1>
+                <p>Pizza Deprizza - Gestión de Órdenes</p>
+            </div>
+            <div class="chef-info">
+                <div class="chef-avatar">👨‍🍳</div>
+                <div>
+                    <div class="chef-name" id="chefName">Chef Mario</div>
+                    <div class="chef-status">En línea</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div class="status-item">
+                <div class="status-number" id="totalOrders">0</div>
+                <div class="status-label">Órdenes Activas</div>
+            </div>
+            <div class="status-item">
+                <div class="status-number" id="pendingOrders">0</div>
+                <div class="status-label">Pendientes</div>
+            </div>
+            <div class="status-item">
+                <div class="status-number" id="cookingOrders">0</div>
+                <div class="status-label">En Cocina</div>
+            </div>
+            <div class="status-item">
+                <div class="status-number" id="readyOrders">0</div>
+                <div class="status-label">Listas</div>
+            </div>
+            <div class="status-item">
+                <div class="status-number" id="avgTime">0</div>
+                <div class="status-label">Tiempo Prom. (min)</div>
+            </div>
+        </div>
+
+        <!-- Filters and Sorting -->
+        <div class="controls">
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">Todas</button>
+                <button class="filter-btn" data-filter="received">Recibidas</button>
+                <button class="filter-btn" data-filter="preparing">Preparando</button>
+                <button class="filter-btn" data-filter="cooking">En Horno</button>
+                <button class="filter-btn" data-filter="ready">Listas</button>
+            </div>
+            
+            <div class="sort-controls">
+                <label>Ordenar por:</label>
+                <button class="sort-btn active" data-sort="time">Tiempo de Creación</button>
+                <button class="sort-btn" data-sort="estimated">Tiempo Estimado</button>
+                <button class="sort-btn" data-sort="priority">Prioridad</button>
+            </div>
+        </div>
+
+        <!-- Orders Grid -->
+        <div class="orders-grid" id="ordersGrid">
+            <!-- Las órdenes se cargarán dinámicamente -->
+        </div>
+
+        <!-- Order Actions (Floating) -->
+        <div class="order-actions" id="orderActions">
+            <button class="action-btn btn-preparing" onclick="updateOrderStatus('preparing')">
+                🔄 Marcar Preparando
+            </button>
+            <button class="action-btn btn-cooking" onclick="updateOrderStatus('cooking')">
+                🔥 Enviar a Horno
+            </button>
+            <button class="action-btn btn-ready" onclick="updateOrderStatus('ready')">
+                ✅ Marcar Lista
+            </button>
+        </div>
+
+        <!-- Order Detail Modal -->
+        <div class="modal" id="orderModal">
+            <div class="modal-content">
+                <span class="close" id="closeModal">&times;</span>
+                <div id="orderDetails">
+                    <!-- Detalles de la orden se cargarán aquí -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification Container -->
+        <div class="notification-container" id="notifications">
+            <!-- Notificaciones aparecerán aquí -->
+        </div>
+    </div>
+
+    <script src="chef-script.js"></script>
+</body>
+</html>

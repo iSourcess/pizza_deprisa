@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizza Deprizza - Menú</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🍕 Pizza Deprizza</h1>
+            <p>Las mejores pizzas de la ciudad</p>
+        </div>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <h3>Estado del Servicio</h3>
+            <div class="delivery-time" id="deliveryTime">Tiempo estimado: 25-35 min</div>
+            <div class="status-indicator" id="statusIndicator">
+                <span class="status-dot"></span>
+                <span id="statusText">Recibiendo órdenes</span>
+            </div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">Todas</button>
+            <button class="filter-btn" data-filter="clasica">Clásicas</button>
+            <button class="filter-btn" data-filter="premium">Premium</button>
+            <button class="filter-btn" data-filter="veggie">Vegetarianas</button>
+        </div>
+
+        <section class="menu">
+            <h2>Nuestro Menú</h2>
+            <div id="menuGrid" class="menu-grid"></div>  <!-- 👈 Este div es clave -->
+          </section>
+
+        <!-- Modal para elegir tamaño -->
+        <div class="modal" id="sizeModal">
+            <div class="modal-content">
+            <span class="close" id="closeSize">&times;</span>
+            <h2>Elige el tamaño de tu pizza</h2>
+            <p id="selectedPizzaName"></p>
+            <div id="sizeOptions" class="size-options"></div>
+            </div>
+        </div>
+
+        <!-- Carrito -->
+        <div class="cart-section">
+            <h3>Tu Pedido</h3>
+            <div class="cart-items" id="cartItems">
+                <p class="empty-cart">Tu carrito está vacío</p>
+            </div>
+            <div class="cart-total">
+                <strong>Total: $<span id="cartTotal">0.00</span></strong>
+            </div>
+            <button class="order-btn" id="orderBtn" disabled>Realizar Pedido</button>
+        </div>
+
+        <!-- Modal de Confirmación -->
+        <div class="modal" id="orderModal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>¡Pedido Confirmado!</h2>
+                <p>Tu pizza estará lista en <span id="orderTime">30 minutos</span></p>
+                <div class="order-tracking">
+                    <div class="tracking-step active">
+                        <div class="step-number">1</div>
+                        <div class="step-text">Pedido recibido</div>
+                    </div>
+                    <div class="tracking-step">
+                        <div class="step-number">2</div>
+                        <div class="step-text">Preparando</div>
+                    </div>
+                    <div class="tracking-step">
+                        <div class="step-number">3</div>
+                        <div class="step-text">En horno</div>
+                    </div>
+                    <div class="tracking-step">
+                        <div class="step-number">4</div>
+                        <div class="step-text">Lista</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Pago -->
+        <div class="modal" id="paymentModal">
+            <div class="modal-content">
+            <span class="close" id="closePayment">&times;</span>
+            <h2>Datos de Pago</h2>
+            <form id="paymentForm">
+                <label>Nombre:</label>
+                <input type="text" id="customerName" required>
+        
+                <label>Método de pago:</label>
+                <select id="paymentMethod" required>
+                <option value="">Seleccione...</option>
+                <option value="efectivo">Efectivo</option>
+                <option value="tarjeta">Tarjeta</option>
+                </select>
+        
+                <div id="cardFields" style="display:none;">
+                <label>Número de tarjeta:</label>
+                <input type="text" id="cardNumber" maxlength="16">
+        
+                <label>Fecha de expiración:</label>
+                <input type="month" id="cardExpiry">
+        
+                <label>CVV:</label>
+                <input type="text" id="cardCVV" maxlength="3">
+                </div>
+        
+                <button type="submit">Confirmar Pago</button>
+            </form>
+            </div>
+        </div>
+    </div>    
+  
+    <script src="static/js/script.js"></script>
+</body>
+</html>
