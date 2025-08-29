@@ -1,6 +1,4 @@
-// ==============================
 // CONFIGURACIÓN GLOBAL
-// ==============================
 let orders = [];
 let selectedOrder = null;
 let currentFilter = 'all';
@@ -15,9 +13,7 @@ const notifications = document.getElementById('notifications');
 const modal = document.getElementById('orderModal');
 const closeModal = document.getElementById('closeModal');
 
-// ==============================
 // INICIALIZACIÓN
-// ==============================
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Panel de Chef iniciado');
     initializeChefPanel();
@@ -99,9 +95,7 @@ function setupEventListeners() {
     });
 }
 
-// ==============================
-// CARGA DE DATOS - CORREGIDO
-// ==============================
+// CARGA DE DATOS
 async function loadOrders() {
     try {
         console.log('Cargando órdenes...');
@@ -207,9 +201,7 @@ function loadMockData() {
     updateStatistics();
 }
 
-// ==============================
 // RENDERIZADO - MEJORADO
-// ==============================
 function renderOrders() {
     if (!ordersGrid) {
         console.error('Element ordersGrid not found');
@@ -294,9 +286,7 @@ function createOrderCard(order) {
     `;
 }
 
-// ==============================
 // FUNCIONES DE FILTRADO Y ORDENAMIENTO
-// ==============================
 function filterOrders(orders) {
     if (currentFilter === 'all') {
         return orders;
@@ -320,9 +310,7 @@ function sortOrders(orders) {
     }
 }
 
-// ==============================
 // GESTIÓN DE ÓRDENES - MEJORADO
-// ==============================
 function selectOrder(orderId) {
     selectedOrder = orders.find(order => order.id === orderId);
     
@@ -423,9 +411,7 @@ async function updateOrderStatus(newStatus) {
     }
 }
 
-// ==============================
-// MODAL Y DETALLES - MEJORADO
-// ==============================
+// MODAL Y DETALLES
 function showOrderDetails(order) {
     const orderDetails = document.getElementById('orderDetails');
     if (!orderDetails) return;
@@ -490,9 +476,7 @@ function showOrderDetails(order) {
     }
 }
 
-// ==============================
 // ESTADÍSTICAS - MEJORADO
-// ==============================
 function updateStatistics() {
     const totalOrders = orders.length;
     const pendingOrders = orders.filter(order => order.status === 'received').length;
@@ -530,9 +514,7 @@ function calculateAverageTime() {
     return totalTime / completedOrders.length;
 }
 
-// ==============================
 // UTILIDADES
-// ==============================
 function calculateProgress(order) {
     const statusProgress = {
         'received': 10,
@@ -585,9 +567,7 @@ function getPriorityText(priority) {
     return priorityTexts[priority] || priority;
 }
 
-// ==============================
 // NOTIFICACIONES
-// ==============================
 function showNotification(message, type = 'info') {
     if (!notifications) return;
     
@@ -610,9 +590,7 @@ function showNotification(message, type = 'info') {
     }, 5000);
 }
 
-// ==============================
 // ACTUALIZACIONES EN TIEMPO REAL
-// ==============================
 function startRealTimeUpdates() {
     // Actualizar órdenes cada 10 segundos
     setInterval(() => {
@@ -634,9 +612,7 @@ function startRealTimeUpdates() {
     console.log('Actualizaciones en tiempo real iniciadas');
 }
 
-// ==============================
 // TESTING Y DEBUG
-// ==============================
 function simulateNewOrder() {
     const newOrder = {
         id: Date.now(),
@@ -671,9 +647,7 @@ if (window.location.hostname === 'localhost' || window.location.hostname === '12
     }, 2000);
 }
 
-// ==============================
 // FUNCIONES GLOBALES PARA TESTING
-// ==============================
 window.chefPanel = {
     orders,
     selectOrder,

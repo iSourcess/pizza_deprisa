@@ -32,6 +32,138 @@
             <button class="filter-btn" data-filter="veggie">Vegetarianas</button>
         </div>
 
+        <!-- Botón personalizar pizza -->
+        <button class="custom-pizza-btn" onclick="showCustomizer()">
+            🎨 Personalizar Pizza
+        </button>
+
+        <!-- Personalizador de pizzas -->
+        <div class="pizza-customizer" id="pizzaCustomizer">
+            <div class="customizer-header">
+                <h2>🍕 Crea tu pizza perfecta</h2>
+                <p>Personaliza cada detalle de tu pizza</p>
+            </div>
+            
+            <div class="customizer-content">
+                <div class="customizer-options">
+                    <!-- Tamaño -->
+                    <div class="option-group">
+                        <h3>Tamaño</h3>
+                        <div class="option-items">
+                            <div class="option-item" data-type="size" data-value="individual" data-pieces="4">
+                                Individual (4pz)
+                                <span class="price">Base $120</span>
+                            </div>
+                            <div class="option-item" data-type="size" data-value="chica" data-pieces="6">
+                                Chica (6pz)
+                                <span class="price">$150</span>
+                            </div>
+                            <div class="option-item selected" data-type="size" data-value="mediana" data-pieces="8">
+                                Mediana (8pz)
+                                <span class="price">$180</span>
+                            </div>
+                            <div class="option-item" data-type="size" data-value="grande" data-pieces="12">
+                                Grande (12pz)
+                                <span class="price">$240</span>
+                            </div>
+                            <div class="option-item" data-type="size" data-value="familiar" data-pieces="16">
+                                Familiar (16pz)
+                                <span class="price">$300</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Masa -->
+                    <div class="option-group">
+                        <h3>Tipo de Masa</h3>
+                        <div class="option-items">
+                            <div class="option-item selected" data-type="dough" data-value="tradicional" data-price="0">
+                                Tradicional
+                                <span class="price">Incluida</span>
+                            </div>
+                            <div class="option-item" data-type="dough" data-value="delgada" data-price="0">
+                                Delgada
+                                <span class="price">Incluida</span>
+                            </div>
+                            <div class="option-item" data-type="dough" data-value="gruesa" data-price="20">
+                                Gruesa
+                                <span class="price">+$20</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Salsa -->
+                    <div class="option-group">
+                        <h3>Salsa Base</h3>
+                        <div class="option-items">
+                            <div class="option-item selected" data-type="sauce" data-value="tomate" data-price="0">
+                                Tomate
+                                <span class="price">Incluida</span>
+                            </div>
+                            <div class="option-item" data-type="sauce" data-value="bbq" data-price="15">
+                                BBQ
+                                <span class="price">+$15</span>
+                            </div>
+                            <div class="option-item" data-type="sauce" data-value="pesto" data-price="25">
+                                Pesto
+                                <span class="price">+$25</span>
+                            </div>
+                            <div class="option-item" data-type="sauce" data-value="blanca" data-price="20">
+                                Blanca
+                                <span class="price">+$20</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Queso -->
+                    <div class="option-group">
+                        <h3>Queso Base</h3>
+                        <div class="option-items">
+                            <div class="option-item selected" data-type="cheese" data-value="mozzarella" data-price="0">
+                                Mozzarella
+                                <span class="price">Incluido</span>
+                            </div>
+                            <div class="option-item" data-type="cheese" data-value="cheddar" data-price="25">
+                                Cheddar
+                                <span class="price">+$25</span>
+                            </div>
+                            <div class="option-item" data-type="cheese" data-value="parmesano" data-price="35">
+                                Parmesano
+                                <span class="price">+$35</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ingredientes -->
+                    <div class="option-group">
+                        <h3>Ingredientes Adicionales</h3>
+                        <div class="ingredient-options" id="ingredientOptions"></div>
+                    </div>
+                </div>
+
+                <!-- Vista previa -->
+                <div class="pizza-preview">
+                    <h3 class="preview-title">Vista Previa</h3>
+                    <div class="pizza-visual" id="pizzaVisual">
+                        <div class="pizza-base"></div>
+                        <div class="pizza-sauce" id="pizzaSauce"></div>
+                        <div class="pizza-cheese" id="pizzaCheese"></div>
+                        <div class="pizza-ingredients" id="pizzaIngredients"></div>
+                    </div>
+                    <div class="preview-details">
+                        <div class="preview-size" id="previewSize">Mediana (8 piezas)</div>
+                        <div class="preview-total" id="previewTotal">$180</div>
+                        <button class="add-custom-btn" id="addCustomBtn" onclick="addCustomPizza()">
+                            Agregar al Carrito
+                        </button>
+                        <button class="add-custom-btn" onclick="hideCustomizer()" style="background: #636e72; margin-top: 10px;">
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <section class="menu">
             <h2>Nuestro Menú</h2>
             <div id="menuGrid" class="menu-grid"></div>  <!-- 👈 Este div es clave -->
@@ -44,6 +176,19 @@
             <h2>Elige el tamaño de tu pizza</h2>
             <p id="selectedPizzaName"></p>
             <div id="sizeOptions" class="size-options"></div>
+            </div>
+        </div>
+
+        <div class="modal double-modal" id="doubleModal">
+            <div class="modal-content">
+                <span class="close" id="closeDouble">&times;</span>
+                <h2>Doble porción de ingrediente</h2>
+                <p id="selectedPizzaNameDouble"></p>
+                <p>Selecciona un ingrediente para doble porción:</p>
+                <div class="ingredient-list" id="doubleIngredientList"></div>
+                <div style="margin-top: 20px;">
+                    <strong>Costo adicional: +$<span id="doubleExtraCost">30</span></strong>
+                </div>
             </div>
         </div>
 

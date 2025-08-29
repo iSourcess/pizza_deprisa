@@ -133,11 +133,34 @@ body {
     border-color: #d63031;
 }
 
+/* Botón personalizar */
+.custom-pizza-btn {
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 30px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+}
+
+.custom-pizza-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(108, 92, 231, 0.4);
+}
+
 /* Menu Grid */
 .menu-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
     margin-bottom: 40px;
 }
 
@@ -149,23 +172,27 @@ body {
     transition: all 0.4s ease;
     border: 1px solid rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    min-height: 500px; /* Altura mínima fija */
 }
 
 .pizza-card:hover {
-    transform: translateY(-12px);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    transform: translateY(-8px); /* Reducir movimiento */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
 .pizza-image {
     width: 100%;
-    height: 220px;
+    height: 180px; /* Reducir de 220px a 180px */
     background: linear-gradient(135deg, #fd79a8, #fdcb6e);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 4em;
+    font-size: 3.5em; /* Reducir tamaño del emoji */
     position: relative;
     overflow: hidden;
+    flex-shrink: 0; /* No se encoge */
 }
 
 .pizza-image::before {
@@ -179,14 +206,23 @@ body {
 }
 
 .pizza-content {
-    padding: 25px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+    position: relative;
 }
 
 .pizza-title {
-    font-size: 1.5em;
+    font-size: 1.3em;
     font-weight: bold;
     color: #2d3436;
-    margin-bottom: 10px;
+    margin-bottom: 12px; /* Aumentar de 8px a 12px */
+    line-height: 1.2;
+    z-index: 2; /* Asegurar que esté encima */
+    position: relative;
+    background: white; /* Fondo blanco para evitar transparencias */
 }
 
 .pizza-category {
@@ -195,54 +231,405 @@ body {
     color: white;
     padding: 4px 12px;
     border-radius: 15px;
-    font-size: 0.8em;
-    margin-bottom: 15px;
+    font-size: 0.75em;
+    margin-bottom: 15px; /* Aumentar de 12px a 15px */
     text-transform: capitalize;
+    width: fit-content;
+    z-index: 2;
+    position: relative;
 }
 
 .pizza-ingredients {
     color: #636e72;
+    margin-top: 5px; /* Agregar margen superior */
     margin-bottom: 15px;
-    font-size: 0.95em;
-    line-height: 1.5;
+    font-size: 0.85em;
+    line-height: 1.5; /* Aumentar line-height */
+    flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word; /* Agregar esto */
+    min-height: 60px; /* Altura mínima fija */
+    max-height: 60px; /* Altura máxima fija */
+    z-index: 1;
+    position: relative;
+    background: rgba(255, 255, 255, 0.9); /* Fondo semi-transparente */
+    padding: 2px 0; /* Pequeño padding interno */
 }
 
 .pizza-info {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    flex-shrink: 0;
 }
 
-.pizza-price {
-    font-size: 1.4em;
-    font-weight: bold;
-    color: #00b894;
+
+.pizza-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.double-btn {
+    background: linear-gradient(135deg, #fd79a8, #e84393);
+    font-size: 0.9em;
+    padding: 15px 10px;
+    flex: 0.7;
+}
+
+.double-btn:hover {
+    background: linear-gradient(135deg, #e84393, #fd79a8);
+    box-shadow: 0 8px 25px rgba(253, 121, 168, 0.4);
 }
 
 .pizza-time {
     color: #e17055;
     font-weight: 500;
+    font-size: 0.9em;
+}
+
+/* Pizza Actions - Mejor espaciado */
+.pizza-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
 }
 
 /* Botón mejorado para elegir tamaño */
 .size-select-btn {
-    width: 100%;
-    padding: 15px 20px;
+    flex: 1;
+    padding: 12px 15px; /* Reducir padding */
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 12px; /* Reducir border-radius */
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9em; /* Reducir tamaño de fuente */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    position: relative;
+    overflow: hidden;
+    min-height: 44px; /* Altura mínima */
+}
+
+/* Modal de doble porción */
+.double-modal .modal-content {
+    max-width: 500px;
+}
+
+.ingredient-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.ingredient-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.ingredient-item:hover {
+    border-color: #fd79a8;
+    background: #fef7f7;
+}
+
+.ingredient-item.selected {
+    border-color: #fd79a8;
+    background: #fef0f5;
+}
+
+.ingredient-name {
+    font-weight: 500;
+    color: #2d3436;
+}
+
+.ingredient-price {
+    color: #00b894;
+    font-weight: bold;
+}
+
+/* Personalizador de pizzas */
+.pizza-customizer {
+    display: none;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 25px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.customizer-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.customizer-header h2 {
+    color: #2d3436;
+    margin-bottom: 10px;
+}
+
+.customizer-content {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 30px;
+}
+
+.customizer-options {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.option-group h3 {
+    color: #2d3436;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    border-bottom: 2px solid #fd79a8;
+    padding-bottom: 5px;
+}
+
+.option-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+}
+
+.option-item {
+    padding: 10px 15px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.option-item:hover {
+    border-color: #fd79a8;
+    background: #fef7f7;
+}
+
+.option-item.selected {
+    border-color: #fd79a8;
+    background: #fd79a8;
+    color: white;
+}
+
+.option-item .price {
+    display: block;
+    font-size: 0.9em;
+    margin-top: 5px;
+    color: #00b894;
+}
+
+.option-item.selected .price {
+    color: white;
+}
+
+.ingredient-options {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.ingredient-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.ingredient-option:hover {
+    background: #f8f9fa;
+}
+
+.ingredient-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.half-btn {
+    padding: 4px 8px;
+    font-size: 0.8em;
+    border: 1px solid #fd79a8;
+    background: white;
+    color: #fd79a8;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.half-btn.active {
+    background: #fd79a8;
+    color: white;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.qty-btn {
+    width: 25px;
+    height: 25px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9em;
+}
+
+.qty-btn:hover {
+    background: #f8f9fa;
+}
+
+/* Vista previa de pizza */
+.pizza-preview {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.preview-title {
+    text-align: center;
+    color: #2d3436;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+}
+
+.pizza-visual {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: #f4a261;
+    position: relative;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+.pizza-base {
+    width: 90%;
+    height: 90%;
+    border-radius: 50%;
+    background: #d4a574;
+    position: absolute;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+}
+
+.pizza-sauce {
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    background: #e63946;
+    position: absolute;
+    transition: all 0.3s ease;
+}
+
+.pizza-cheese {
+    width: 75%;
+    height: 75%;
+    border-radius: 50%;
+    background: #fff3cd;
+    position: absolute;
+    transition: all 0.3s ease;
+}
+
+.pizza-ingredients {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.ingredient-dot {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.ingredient-pepperoni { background: #8b0000; }
+.ingredient-champiñones { background: #d2b48c; }
+.ingredient-pimientos { background: #228b22; }
+.ingredient-cebolla { background: #dda0dd; }
+.ingredient-jamón { background: #ffc0cb; }
+.ingredient-piña { background: #ffd700; }
+.ingredient-aceitunas { background: #556b2f; }
+.ingredient-tocino { background: #d2691e; }
+.ingredient-salchicha { background: #8b4513; }
+
+.preview-details {
+    text-align: center;
+}
+
+.preview-size {
+    font-size: 1.1em;
+    color: #636e72;
+    margin-bottom: 10px;
+}
+
+.preview-total {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #00b894;
+    margin-bottom: 20px;
+}
+
+.add-custom-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #00b894, #00cec9);
     color: white;
     border: none;
     border-radius: 15px;
     font-weight: bold;
+    font-size: 1.1em;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-size: 1.1em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    position: relative;
-    overflow: hidden;
+}
+
+.add-custom-btn:hover {
+    background: linear-gradient(135deg, #00cec9, #81ecec);
+    transform: translateY(-2px);
+}
+
+.add-custom-btn:disabled {
+    background: #b2bec3;
+    cursor: not-allowed;
 }
 
 .size-select-btn::before {
@@ -610,7 +997,7 @@ body {
     }
     
     .menu-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* 1 columna en móviles */
         gap: 20px;
     }
     
@@ -637,9 +1024,26 @@ body {
         padding: 25px;
         width: 95%;
     }
+
+    .customizer-content {
+        grid-template-columns: 1fr;
+    }
     
-    .size-option-btn {
-        padding: 15px;
+    .pizza-preview {
+        order: -1;
+        position: relative;
+        top: 0;
+    }
+    
+    .pizza-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .size-select-btn,
+    .double-btn {
+        flex: 1;
+        min-height: 48px;
     }
     
     .size-info {
@@ -649,14 +1053,26 @@ body {
     }
     
     .pizza-card {
-        margin-bottom: 20px;
+        min-height: auto; /* Altura automática en móviles */
     }
     
     .btn-text {
-        display: none;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     
     .size-select-btn {
         padding: 12px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .btn-text {
+        display: none; /* Ocultar texto en pantallas medianas */
+    }
+    
+    .size-select-btn {
+        padding: 12px 8px;
     }
 }
