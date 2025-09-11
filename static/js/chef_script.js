@@ -99,7 +99,19 @@ function setupEventListeners() {
 async function loadOrders() {
     try {
         console.log('Cargando órdenes...');
-        const response = await fetch('/api/admin/orders');
+        // Asegurarse de que la URL sea correcta y completa
+        const apiUrl = window.location.origin + '/api/admin/orders';
+        console.log('Conectando a:', apiUrl);
+        
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            // Asegurar que no se use caché
+            cache: 'no-cache'
+        });
         
         if (response.ok) {
             const data = await response.json();
@@ -208,6 +220,12 @@ function renderOrders() {
         return;
     }
     
+    // Verificar que orders sea un array
+    if (!Array.isArray(orders)) {
+        console.error('Orders is not an array:', orders);
+        orders = [];
+    }
+    
     const filteredOrders = filterOrders(orders);
     const sortedOrders = sortOrders(filteredOrders);
     
@@ -219,6 +237,9 @@ function renderOrders() {
                 <div class="empty-state-icon">🍕</div>
                 <h3>No hay órdenes ${currentFilter === 'all' ? '' : 'en este estado'}</h3>
                 <p>Las órdenes aparecerán aquí automáticamente</p>
+                <button onclick="loadOrders()" class="refresh-btn" style="margin-top: 15px; padding: 10px 20px; background: #fd79a8; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                    🔄 Actualizar Órdenes
+                </button>
             </div>
         `;
         return;
@@ -351,11 +372,17 @@ async function updateOrderStatus(newStatus) {
     const previousStatus = selectedOrder.status;
     
     try {
-        const response = await fetch(`/api/orders/${orderId}/status`, {
+        // Asegurarse de que la URL sea correcta y completa
+        const apiUrl = window.location.origin + `/api/orders/${orderId}/status`;
+        console.log('Actualizando estado de orden:', apiUrl);
+        
+        const response = await fetch(apiUrl, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             },
+            cache: 'no-cache',
             body: JSON.stringify({ status: newStatus })
         });
         
@@ -592,20 +619,33 @@ function showNotification(message, type = 'info') {
 
 // ACTUALIZACIONES EN TIEMPO REAL
 function startRealTimeUpdates() {
+    // Cargar órdenes inmediatamente al iniciar
+    setTimeout(() => {
+        loadOrders();
+    }, 500);
+    
     // Actualizar órdenes cada 10 segundos
     setInterval(() => {
-        loadOrders();
+        const now = Date.now();
+        // Solo actualizar si han pasado al menos 5 segundos desde la última actualización
+        if (now - lastUpdateTime > 5000) {
+            console.log('Actualizando órdenes automáticamente...');
+            loadOrders();
+            lastUpdateTime = now;
+        }
     }, 10000);
     
     // Actualizar tiempos cada minuto
     setInterval(() => {
         if (orders.length > 0) {
+            console.log('Actualizando progreso y prioridades...');
             // Recalcular progreso y prioridades
             orders.forEach(order => {
                 order.progress = calculateProgress(order);
                 order.priority = calculatePriority(order);
             });
             renderOrders();
+            updateStatistics();
         }
     }, 60000);
     

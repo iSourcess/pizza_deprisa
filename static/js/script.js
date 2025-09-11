@@ -380,17 +380,18 @@ function renderIngredientOptions() {
         const div = document.createElement('div');
         div.className = 'ingredient-option';
         div.innerHTML = `
-            <div>
-                <strong>${ingredient.name}</strong>
-                <div style="font-size: 0.9em; color: #636e72;">+$${ingredient.price}</div>
+            <div class="ingredient-info">
+                <div class="ingredient-name">${ingredient.name}</div>
+                <div class="ingredient-price-text">+$${ingredient.price}</div>
             </div>
             <div class="ingredient-controls">
-                <button class="half-btn" data-half="left" onclick="toggleHalf('${ingredient.name}', 'left')">1/2 Izq</button>
-                <button class="half-btn" data-half="right" onclick="toggleHalf('${ingredient.name}', 'right')">1/2 Der</button>
-                <div class="quantity-controls">
-                    <button class="qty-btn" onclick="changeIngredientQuantity('${ingredient.name}', -1)">-</button>
-                    <span id="qty-${ingredient.name}">0</span>
-                    <button class="qty-btn" onclick="changeIngredientQuantity('${ingredient.name}', 1)">+</button>
+                <button class="ingredient-toggle-btn" id="toggle-btn-${ingredient.name}" onclick="toggleIngredient('${ingredient.name}')">
+                    Agregar
+                </button>
+                <div class="half-controls" id="half-controls-${ingredient.name}">
+                    <button class="half-btn" data-half="left" onclick="toggleHalf('${ingredient.name}', 'left')">1/2 Izq</button>
+                    <button class="half-btn" data-half="right" onclick="toggleHalf('${ingredient.name}', 'right')">1/2 Der</button>
+                    <button class="half-btn full-btn" onclick="setFullPizza('${ingredient.name}')">Completa</button>
                 </div>
             </div>
         `;
@@ -398,39 +399,81 @@ function renderIngredientOptions() {
     });
 }
 
-function changeIngredientQuantity(name, change) {
-    if (!customPizza.ingredients[name]) {
-        customPizza.ingredients[name] = { quantity: 0, half: null };
-    }
+// Función corregida para alternar ingredientes
+function toggleIngredient(name) {
+    const toggleBtn = document.getElementById(`toggle-btn-${name}`);
+    const halfControls = document.getElementById(`half-controls-${name}`);
+    const ingredientOption = toggleBtn.closest('.ingredient-option');
     
-    customPizza.ingredients[name].quantity = Math.max(0, customPizza.ingredients[name].quantity + change);
-    
-    if (customPizza.ingredients[name].quantity === 0) {
+    if (customPizza.ingredients[name]) {
+        // Remover ingrediente
         delete customPizza.ingredients[name];
-    }
-    
-    document.getElementById(`qty-${name}`).textContent = customPizza.ingredients[name]?.quantity || 0;
-    updatePizzaPreview();
-}
-
-function toggleHalf(name, side) {
-    if (!customPizza.ingredients[name] || customPizza.ingredients[name].quantity === 0) {
-        customPizza.ingredients[name] = { quantity: 1, half: side };
-        document.getElementById(`qty-${name}`).textContent = 1;
+        toggleBtn.textContent = 'Agregar';
+        toggleBtn.classList.remove('active');
+        halfControls.classList.remove('show');
+        ingredientOption.classList.remove('active');
+        
+        // Limpiar botones de mitad
+        const halfBtns = halfControls.querySelectorAll('.half-btn');
+        halfBtns.forEach(btn => btn.classList.remove('active'));
     } else {
-        customPizza.ingredients[name].half = customPizza.ingredients[name].half === side ? null : side;
+        // Agregar ingrediente (por defecto completo)
+        customPizza.ingredients[name] = { coverage: 'full' };
+        toggleBtn.textContent = 'Quitar';
+        toggleBtn.classList.add('active');
+        halfControls.classList.add('show');
+        ingredientOption.classList.add('active');
+        
+        // Activar botón "Completa" por defecto
+        halfControls.querySelector('.full-btn').classList.add('active');
     }
-    
-    // Actualizar UI de botones
-    const leftBtn = document.querySelector(`[data-half="left"][onclick*="${name}"]`);
-    const rightBtn = document.querySelector(`[data-half="right"][onclick*="${name}"]`);
-    
-    leftBtn.classList.toggle('active', customPizza.ingredients[name].half === 'left');
-    rightBtn.classList.toggle('active', customPizza.ingredients[name].half === 'right');
     
     updatePizzaPreview();
 }
 
+// Función corregida para alternar mitades
+function toggleHalf(name, side) {
+    if (!customPizza.ingredients[name]) return;
+    
+    const halfControls = document.getElementById(`half-controls-${name}`);
+    const leftBtn = halfControls.querySelector('[data-half="left"]');
+    const rightBtn = halfControls.querySelector('[data-half="right"]');
+    const fullBtn = halfControls.querySelector('.full-btn');
+    
+    // Limpiar selecciones anteriores
+    leftBtn.classList.remove('active');
+    rightBtn.classList.remove('active');
+    fullBtn.classList.remove('active');
+    
+    // Activar el botón seleccionado
+    const selectedBtn = side === 'left' ? leftBtn : rightBtn;
+    selectedBtn.classList.add('active');
+    
+    // Actualizar configuración
+    customPizza.ingredients[name].coverage = side;
+    updatePizzaPreview();
+}
+
+// Función corregida para pizza completa
+function setFullPizza(name) {
+    if (!customPizza.ingredients[name]) return;
+    
+    const halfControls = document.getElementById(`half-controls-${name}`);
+    const leftBtn = halfControls.querySelector('[data-half="left"]');
+    const rightBtn = halfControls.querySelector('[data-half="right"]');
+    const fullBtn = halfControls.querySelector('.full-btn');
+    
+    // Limpiar selecciones anteriores
+    leftBtn.classList.remove('active');
+    rightBtn.classList.remove('active');
+    fullBtn.classList.add('active');
+    
+    // Actualizar configuración
+    customPizza.ingredients[name].coverage = 'full';
+    updatePizzaPreview();
+}
+
+// Función mejorada para actualizar vista previa
 function updatePizzaPreview() {
     // Actualizar colores base
     const sauceColors = {
@@ -458,23 +501,43 @@ function updatePizzaPreview() {
         const ingredient = customPizza.ingredients[name];
         const ingredientData = availableIngredients.find(ing => ing.name === name);
         
-        for (let i = 0; i < ingredient.quantity; i++) {
+        if (!ingredientData) return;
+        
+        // Generar múltiples puntos para cada ingrediente
+        const numDots = 8;
+        for (let i = 0; i < numDots; i++) {
             const dot = document.createElement('div');
             dot.className = `ingredient-dot ingredient-${ingredientData.className}`;
             
-            // Posicionar aleatoriamente o en mitades
-            const angle = Math.random() * 2 * Math.PI;
-            const radius = 30 + Math.random() * 60;
+            // Posicionar según la cobertura
+            let x, y;
+            const angle = (i / numDots) * 2 * Math.PI + Math.random() * 0.5;
+            const baseRadius = 35;
+            const radiusVariation = Math.random() * 40;
+            const radius = baseRadius + radiusVariation;
             
-            if (ingredient.half === 'left') {
-                dot.style.left = `${50 - Math.cos(angle) * radius/2}%`;
-            } else if (ingredient.half === 'right') {
-                dot.style.left = `${50 + Math.cos(angle) * radius/2}%`;
+            if (ingredient.coverage === 'left') {
+                // Solo lado izquierdo
+                const leftAngle = angle < Math.PI ? angle : Math.PI - (angle - Math.PI);
+                x = 50 + Math.cos(leftAngle + Math.PI) * radius;
+                y = 50 + Math.sin(leftAngle + Math.PI) * radius;
+            } else if (ingredient.coverage === 'right') {
+                // Solo lado derecho
+                const rightAngle = angle < Math.PI ? angle : Math.PI - (angle - Math.PI);
+                x = 50 + Math.cos(rightAngle) * radius;
+                y = 50 + Math.sin(rightAngle) * radius;
             } else {
-                dot.style.left = `${50 + Math.cos(angle) * radius}%`;
+                // Pizza completa
+                x = 50 + Math.cos(angle) * radius;
+                y = 50 + Math.sin(angle) * radius;
             }
             
-            dot.style.top = `${50 + Math.sin(angle) * radius}%`;
+            // Asegurar que los puntos estén dentro del círculo
+            x = Math.max(15, Math.min(85, x));
+            y = Math.max(15, Math.min(85, y));
+            
+            dot.style.left = `${x}%`;
+            dot.style.top = `${y}%`;
             ingredientsContainer.appendChild(dot);
         }
     });
@@ -495,7 +558,9 @@ function updatePizzaPreview() {
     
     Object.keys(customPizza.ingredients).forEach(name => {
         const ingredientData = availableIngredients.find(ing => ing.name === name);
-        totalPrice += ingredientData.price * customPizza.ingredients[name].quantity;
+        if (ingredientData) {
+            totalPrice += ingredientData.price;
+        }
     });
     
     document.getElementById('previewTotal').textContent = `$${totalPrice}`;
@@ -508,8 +573,8 @@ function addCustomPizza() {
     const ingredientNames = Object.keys(customPizza.ingredients).map(name => {
         const ingredient = customPizza.ingredients[name];
         let desc = name;
-        if (ingredient.quantity > 1) desc += ` x${ingredient.quantity}`;
-        if (ingredient.half) desc += ` (1/2 ${ingredient.half === 'left' ? 'izq' : 'der'})`;
+        if (ingredient.coverage === 'left') desc += ' (1/2 izq)';
+        else if (ingredient.coverage === 'right') desc += ' (1/2 der)';
         return desc;
     });
     
@@ -521,7 +586,7 @@ function addCustomPizza() {
     let totalPrice = customPizza.size.price + customPizza.dough.price + customPizza.sauce.price + customPizza.cheese.price;
     Object.keys(customPizza.ingredients).forEach(name => {
         const ingredientData = availableIngredients.find(ing => ing.name === name);
-        totalPrice += ingredientData.price * customPizza.ingredients[name].quantity;
+        totalPrice += ingredientData.price;
     });
     
     // Agregar al carrito
